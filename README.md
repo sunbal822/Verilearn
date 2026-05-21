@@ -364,6 +364,25 @@ npm run build
 
 ---
 
+# ☁️ Deployment & Hosting
+
+VeriLearn has been successfully deployed on Vercel for real-world cloud accessibility and scalable hosting.
+
+The deployment enables:
+- Fast and secure access through the web
+- Real-time availability for students and professors
+- Optimized frontend performance
+- Automatic deployment updates
+- Scalable cloud infrastructure
+
+## 🌐 Live Deployment
+
+🔗 Live Project Link: <https://verilearn-v4fq.vercel.app/>
+
+## 🚀 Deployment Platform
+
+- Vercel
+
 # 📌 Future Improvements
 
 - Real-time webcam monitoring
