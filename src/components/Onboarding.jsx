@@ -1,4 +1,4 @@
-﻿import { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import * as pdfjsLib from 'pdfjs-dist/build/pdf'
 import mammoth from 'mammoth'
 
@@ -21,32 +21,26 @@ export default function Onboarding({ onSubmit }) {
         const ext = file.name.split('.').pop().toLowerCase()
 
         try {
-            // TXT / PY / MD / JS
             if (['txt', 'py', 'js', 'md', 'json', 'html', 'css'].includes(ext)) {
                 return await file.text()
             }
 
-            // PDF (FIXED + safer)
             if (ext === 'pdf') {
                 const arrayBuffer = await file.arrayBuffer()
-
                 const pdf = await pdfjsLib.getDocument({
                     data: arrayBuffer,
-                    disableWorker: true // 🔥 avoids worker issues
+                    disableWorker: true
                 }).promise
 
                 let text = ''
-
                 for (let i = 1; i <= pdf.numPages; i++) {
                     const page = await pdf.getPage(i)
                     const content = await page.getTextContent()
                     text += content.items.map(item => item.str).join(' ') + '\n'
                 }
-
                 return text
             }
 
-            // DOCX
             if (ext === 'docx') {
                 const arrayBuffer = await file.arrayBuffer()
                 const result = await mammoth.extractRawText({ arrayBuffer })
@@ -81,6 +75,13 @@ export default function Onboarding({ onSubmit }) {
         if (!subject.trim()) return setError('Enter subject')
         if (!fileContent.trim()) return setError('Upload or paste content')
 
+        // Check for duplicate Roll ID
+        const existing = JSON.parse(localStorage.getItem('verilearn_records') || '[]')
+        const alreadyTaken = existing.some(
+            r => r.rollId.trim().toLowerCase() === rollId.trim().toLowerCase()
+        )
+        if (alreadyTaken) return setError('This Roll ID has already completed a viva. Each student can only attempt once.')
+
         setError('')
         setLoading(true)
 
@@ -112,28 +113,23 @@ export default function Onboarding({ onSubmit }) {
                 boxShadow: '0 0 20px rgba(0,0,0,0.6)'
             }}>
 
-                {/* TITLE */}
                 <h2 style={{ marginBottom: 20, textAlign: 'center' }}>
                     Student Setup
                 </h2>
 
-                {/* INPUTS */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-
                     <input
                         placeholder="Name"
                         value={name}
                         onChange={e => setName(e.target.value)}
                         style={inputStyle}
                     />
-
                     <input
                         placeholder="Roll ID"
                         value={rollId}
                         onChange={e => setRollId(e.target.value)}
                         style={inputStyle}
                     />
-
                     <input
                         placeholder="Subject"
                         value={subject}
@@ -142,7 +138,6 @@ export default function Onboarding({ onSubmit }) {
                     />
                 </div>
 
-                {/* FILE UPLOAD */}
                 <div
                     onClick={() => fileRef.current.click()}
                     style={{
@@ -165,7 +160,6 @@ export default function Onboarding({ onSubmit }) {
                     />
                 </div>
 
-                {/* TEXT AREA */}
                 <textarea
                     value={fileContent}
                     onChange={e => setFileContent(e.target.value)}
@@ -183,7 +177,6 @@ export default function Onboarding({ onSubmit }) {
                     }}
                 />
 
-                {/* ERROR */}
                 {error && (
                     <p style={{
                         color: 'red',
@@ -194,7 +187,6 @@ export default function Onboarding({ onSubmit }) {
                     </p>
                 )}
 
-                {/* BUTTON */}
                 <button
                     onClick={handleSubmit}
                     disabled={loading}
