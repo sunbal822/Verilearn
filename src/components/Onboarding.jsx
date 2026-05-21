@@ -65,7 +65,7 @@ export default function Onboarding({ onSubmit }) {
             const text = await extractText(file)
             setFileContent(text)
         } catch (err) {
-            setError('Failed to read file. Use TXT, PDF, or DOCX.')
+            setError('Failed to read file. Use TXT, .PY, or DOCX.')
         }
     }
 
@@ -150,11 +150,11 @@ export default function Onboarding({ onSubmit }) {
                         color: '#aaa'
                     }}
                 >
-                    {fileName || "Click to upload PDF / DOCX / TXT"}
+                    {fileName || "Click to upload .PY / DOCX / TXT"}
                     <input
                         ref={fileRef}
                         type="file"
-                        accept=".txt,.pdf,.docx"
+                        accept=".txt,.pdf,.py,.docx"
                         onChange={handleFile}
                         hidden
                     />
