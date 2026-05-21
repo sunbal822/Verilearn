@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+    --primary: #0a0a0f;
+    --accent: #6c63ff;
+    --accent2: #00d4aa;
+    --danger: #ff4757;
+    --warn: #ffa502;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --surface3: #22222f;
+    --border: rgba(255,255,255,0.08);
+    --text: #f0f0f8;
+    --text2: #9090aa;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --radius: 16px;
+    --radius-sm: 10px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body, #root {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    background: var(--primary);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+}
+
+button {
+    cursor: pointer;
+    font-family: var(--font-body);
+    border: none;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+input, textarea {
+    font-family: var(--font-body);
+    outline: none;
+    border: none;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--surface3);
+    border-radius: 3px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%,100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes timerPulse {
+    0%,100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes logoGlow {
+    0%,100% {
+        filter: drop-shadow(0 0 20px rgba(108,99,255,0.6));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 40px rgba(0,212,170,0.8));
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
