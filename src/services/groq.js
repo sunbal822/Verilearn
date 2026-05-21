@@ -17,28 +17,20 @@ async function ask(messages, json = false) {
             ...(json && { response_format: { type: 'json_object' } })
         })
     })
-
     const data = await res.json()
     return data.choices?.[0]?.message?.content || ''
 }
 
-// ------------------------------
-// QUESTIONS GENERATION
-// ------------------------------
 export async function generateQuestions(fileContent, subject) {
     const prompt = `
 You are an academic examiner.
-
 Generate 10 viva questions:
 - 4 Easy
 - 3 Medium
 - 3 Hard
-
 Subject: ${subject}
-
 Content:
 ${fileContent.slice(0, 3000)}
-
 Return ONLY JSON:
 {
   "questions": [
@@ -46,7 +38,6 @@ Return ONLY JSON:
   ]
 }
 `
-
     try {
         const raw = await ask([{ role: 'user', content: prompt }], true)
         return JSON.parse(raw).questions
@@ -55,40 +46,30 @@ Return ONLY JSON:
     }
 }
 
-// ------------------------------
-// ANSWER EVALUATION (FAIR MARKING)
-// ------------------------------
 export async function evaluateAnswer(question, answer, difficulty) {
     const prompt = `
 You are a FAIR university examiner.
-
 DO NOT be strict about grammar.
-
 Scoring rules:
-0–3 = poor
-4–6 = partial understanding
-7–10 = good understanding
-
+0-3 = poor
+4-6 = partial understanding
+7-10 = good understanding
 Question: ${question}
 Difficulty: ${difficulty}
 Answer: ${answer}
-
 Return ONLY JSON:
 {
   "score": number (0-10),
   "feedback": "short explanation"
 }
 `
-
     try {
         const raw = await ask([{ role: 'user', content: prompt }], true)
         const parsed = JSON.parse(raw)
-
         return {
             score: Math.max(0, Math.min(10, Number(parsed.score || 0))),
             feedback: parsed.feedback || "No feedback"
         }
-
     } catch (e) {
         return {
             score: 0,
@@ -97,9 +78,6 @@ Return ONLY JSON:
     }
 }
 
-// ------------------------------
-// FALLBACK QUESTIONS
-// ------------------------------
 function fallbackQuestions(subject) {
     return [
         { question: `What is ${subject}?`, difficulty: 'Easy' },
